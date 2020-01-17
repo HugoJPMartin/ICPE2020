@@ -16,15 +16,12 @@ RUN R -e "install.packages('plyr',dependencies=TRUE, repos='http://cran.rstudio.
 RUN R -e "install.packages('effsize',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('FSA',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
+RUN git clone https://github.com/jualvespereira/ICPE2020.git
 
 
-RUN mkdir /docker
-
-RUN git clone https://github.com/jualvespereira/ICPE2020.git /docker/ICPE2020
-RUN mv SPLConqueror ../docker/ICPE2020/
-RUN mv z3 ../docker/ICPE2020/
-
-RUN cd /docker
-RUN chmod -R u+x *
+COPY mv.sh .
+RUN chmod u+x mv.sh
 
 WORKDIR /docker
+
+ENTRYPOINT "/application/mv.sh"  && /bin/bash
